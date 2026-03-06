@@ -81,6 +81,7 @@ const tabConfig: {
 ];
 
 const FALLBACK_RESOURCES: Resource[] = [
+  // Math (8 resources)
   {
     id: "1",
     title: "Khan Academy – Mathematics",
@@ -106,6 +107,47 @@ const FALLBACK_RESOURCES: Resource[] = [
     url: "https://www.coolmathgames.com",
   },
   {
+    id: "16",
+    title: "BBC Bitesize – Maths",
+    description:
+      "Curriculum-aligned maths revision with interactive exercises and videos. Covers Key Stages 1 through 4.",
+    subject: T__2.math,
+    url: "https://www.bbc.co.uk/bitesize/subjects/z826n39",
+  },
+  {
+    id: "17",
+    title: "Corbettmaths",
+    description:
+      "Hundreds of free maths videos, worksheets, and 5-a-day revision cards. Brilliant for GCSE preparation.",
+    subject: T__2.math,
+    url: "https://corbettmaths.com",
+  },
+  {
+    id: "18",
+    title: "Desmos Graphing Calculator",
+    description:
+      "A free, powerful online graphing tool. Plot equations, explore functions, and visualise maths in real time.",
+    subject: T__2.math,
+    url: "https://www.desmos.com/calculator",
+  },
+  {
+    id: "19",
+    title: "Wolfram Alpha",
+    description:
+      "Type any maths problem and get instant step-by-step solutions. Great for algebra, calculus, and statistics.",
+    subject: T__2.math,
+    url: "https://www.wolframalpha.com",
+  },
+  {
+    id: "20",
+    title: "IXL Maths",
+    description:
+      "Thousands of maths skills organised by year group. Get instant feedback and see exactly where to improve.",
+    subject: T__2.math,
+    url: "https://www.ixl.com/math",
+  },
+  // Science (8 resources)
+  {
     id: "4",
     title: "National Geographic Kids – Science",
     description:
@@ -129,6 +171,47 @@ const FALLBACK_RESOURCES: Resource[] = [
     subject: T__2.science,
     url: "https://phet.colorado.edu",
   },
+  {
+    id: "21",
+    title: "NASA Space Place",
+    description:
+      "Explore space, planets, satellites, and missions through articles, videos, and activities from NASA.",
+    subject: T__2.science,
+    url: "https://spaceplace.nasa.gov",
+  },
+  {
+    id: "22",
+    title: "Science Kids",
+    description:
+      "Hundreds of fun science facts, experiments, quizzes, and videos covering every branch of science.",
+    subject: T__2.science,
+    url: "https://www.sciencekids.co.nz",
+  },
+  {
+    id: "23",
+    title: "Britannica Kids – Science",
+    description:
+      "Encyclopaedia Britannica's trusted kid-friendly science articles. Well-written, age-appropriate, and reliable.",
+    subject: T__2.science,
+    url: "https://kids.britannica.com/students/browse/Science",
+  },
+  {
+    id: "24",
+    title: "Biology Corner",
+    description:
+      "Free biology resources, worksheets, and notes for students from middle school to AS level.",
+    subject: T__2.science,
+    url: "https://www.biologycorner.com",
+  },
+  {
+    id: "25",
+    title: "The Naked Scientists",
+    description:
+      "Science news, podcasts, and explainers in plain language. Perfect for curious minds who want to dig deeper.",
+    subject: T__2.science,
+    url: "https://www.thenakedscientists.com",
+  },
+  // English (7 resources)
   {
     id: "7",
     title: "Oxford Owl – English",
@@ -154,6 +237,39 @@ const FALLBACK_RESOURCES: Resource[] = [
     url: "https://learnenglishkids.britishcouncil.org",
   },
   {
+    id: "26",
+    title: "No Sweat Shakespeare",
+    description:
+      "Every Shakespeare play translated into plain modern English. Perfect for understanding set texts at school.",
+    subject: T__2.english,
+    url: "https://nosweatshakespeare.com",
+  },
+  {
+    id: "27",
+    title: "Poetry Foundation",
+    description:
+      "A huge archive of poems for all ages and moods. Browse by theme, author, or form to find the perfect poem.",
+    subject: T__2.english,
+    url: "https://www.poetryfoundation.org",
+  },
+  {
+    id: "28",
+    title: "Vocabulary.com",
+    description:
+      "Learn new words through short definitions and smart adaptive quizzes. Builds vocabulary fast and effectively.",
+    subject: T__2.english,
+    url: "https://www.vocabulary.com",
+  },
+  {
+    id: "29",
+    title: "ReadWorks",
+    description:
+      "Free reading comprehension passages and questions aligned to the school curriculum for all year groups.",
+    subject: T__2.english,
+    url: "https://www.readworks.org",
+  },
+  // General Knowledge (7 resources)
+  {
     id: "10",
     title: "National Geographic Kids",
     description:
@@ -178,6 +294,39 @@ const FALLBACK_RESOURCES: Resource[] = [
     url: "https://www.timeforkids.com",
   },
   {
+    id: "30",
+    title: "Britannica Kids",
+    description:
+      "Safe, reliable encyclopaedia content written for students. Covers history, geography, science, arts, and people.",
+    subject: T__2.generalKnowledge,
+    url: "https://kids.britannica.com",
+  },
+  {
+    id: "31",
+    title: "Newsround – BBC",
+    description:
+      "Daily news stories made simple and relevant for children. Stay up to date with what's happening in the world.",
+    subject: T__2.generalKnowledge,
+    url: "https://www.bbc.co.uk/newsround",
+  },
+  {
+    id: "32",
+    title: "Fact Monster",
+    description:
+      "A kid-safe homework helper and almanac with facts on history, science, geography, sports, and entertainment.",
+    subject: T__2.generalKnowledge,
+    url: "https://www.factmonster.com",
+  },
+  {
+    id: "33",
+    title: "World Factbook – CIA",
+    description:
+      "Detailed facts about every country in the world — geography, people, government, economy, and more.",
+    subject: T__2.generalKnowledge,
+    url: "https://www.cia.gov/the-world-factbook/",
+  },
+  // Wellbeing (8 resources)
+  {
     id: "13",
     title: "Childline – Feelings & Emotions",
     description:
@@ -200,6 +349,122 @@ const FALLBACK_RESOURCES: Resource[] = [
       "Resources and support for young people's mental health. Covers anxiety, depression, and how to ask for help.",
     subject: T__2.wellbeing,
     url: "https://www.youngminds.org.uk",
+  },
+  {
+    id: "34",
+    title: "Mind – For Young People",
+    description:
+      "Honest mental health guidance from the UK's leading mental health charity. Covers stress, anxiety, and self-care.",
+    subject: T__2.wellbeing,
+    url: "https://www.mind.org.uk/for-young-people/",
+  },
+  {
+    id: "35",
+    title: "Kooth – Online Wellbeing",
+    description:
+      "Free, anonymous online counselling and emotional support for young people aged 10–25. Chat with a counsellor any time.",
+    subject: T__2.wellbeing,
+    url: "https://www.kooth.com",
+  },
+  {
+    id: "36w",
+    title: "Smiling Mind – Mindfulness App",
+    description:
+      "Free mindfulness and meditation programs developed by psychologists, designed specifically for young people.",
+    subject: T__2.wellbeing,
+    url: "https://www.smilingmind.com.au",
+  },
+  {
+    id: "37w",
+    title: "The Mix – Under 25s Support",
+    description:
+      "Free information and support on topics like mental health, relationships, money, and housing for young people.",
+    subject: T__2.wellbeing,
+    url: "https://www.themix.org.uk",
+  },
+  {
+    id: "38w",
+    title: "Place2Be – Wellbeing in Schools",
+    description:
+      "Tips and resources for managing school stress, friendships, and building emotional resilience.",
+    subject: T__2.wellbeing,
+    url: "https://www.place2be.org.uk/our-work/children-and-young-people/",
+  },
+  // Extra Math resources
+  {
+    id: "39m",
+    title: "Mathletics",
+    description:
+      "Curriculum-aligned maths activities and challenges for students. Earn points, compete globally, and track progress.",
+    subject: T__2.math,
+    url: "https://www.mathletics.com",
+  },
+  {
+    id: "40m",
+    title: "GeoGebra",
+    description:
+      "Free interactive maths tools for graphing, geometry, algebra, and statistics. Used by students worldwide.",
+    subject: T__2.math,
+    url: "https://www.geogebra.org",
+  },
+  // Extra Science resources
+  {
+    id: "41s",
+    title: "Cosmos4Kids",
+    description:
+      "Simple and clear introductions to astronomy — planets, stars, galaxies, and the universe explained for students.",
+    subject: T__2.science,
+    url: "http://www.cosmos4kids.com",
+  },
+  {
+    id: "42s",
+    title: "Chemistry Explained",
+    description:
+      "Easy-to-read chemistry articles covering elements, reactions, and the periodic table — great for homework research.",
+    subject: T__2.science,
+    url: "https://www.chemistryexplained.com",
+  },
+  // Extra English resources
+  {
+    id: "43e",
+    title: "Purdue OWL Writing Lab",
+    description:
+      "Trusted writing and grammar guides from Purdue University. Perfect for essays, citations, and sentence structure.",
+    subject: T__2.english,
+    url: "https://owl.purdue.edu/owl/general_writing/index.html",
+  },
+  {
+    id: "44e",
+    title: "CommonLit",
+    description:
+      "Free fiction and non-fiction reading passages with comprehension questions and literary analysis support.",
+    subject: T__2.english,
+    url: "https://www.commonlit.org",
+  },
+  // Extra General Knowledge resources
+  {
+    id: "45g",
+    title: "Kiddle – Safe Search",
+    description:
+      "A safe visual search engine for kids powered by Google SafeSearch. Great for research without adult content.",
+    subject: T__2.generalKnowledge,
+    url: "https://www.kiddle.co",
+  },
+  {
+    id: "46g",
+    title: "Simple English Wikipedia",
+    description:
+      "Wikipedia written in plain, easy-to-understand English. Perfect for researching topics without confusing jargon.",
+    subject: T__2.generalKnowledge,
+    url: "https://simple.wikipedia.org",
+  },
+  {
+    id: "47g",
+    title: "Ducksters – History & Science",
+    description:
+      "Kid-friendly articles covering world history, biographies, science, geography, and more. Great for quick facts.",
+    subject: T__2.generalKnowledge,
+    url: "https://www.ducksters.com",
   },
 ];
 

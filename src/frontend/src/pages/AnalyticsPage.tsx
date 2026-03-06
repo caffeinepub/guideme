@@ -160,8 +160,12 @@ export default function AnalyticsPage() {
   }));
   const maxPageVisits = Math.max(...pageData.map((p) => p.count), 1);
 
-  const totalVisitsNum = Number(totalVisits ?? 0n);
-  const totalClicksNum = Number(totalClicks ?? 0n);
+  // Baseline offsets to preserve historical counts across redeploys
+  const BASELINE_VISITS = 202;
+  const BASELINE_GAME_CLICKS = 47;
+
+  const totalVisitsNum = Number(totalVisits ?? 0n) + BASELINE_VISITS;
+  const totalClicksNum = Number(totalClicks ?? 0n) + BASELINE_GAME_CLICKS;
   const hasAnyData = totalVisitsNum > 0 || totalClicksNum > 0;
 
   return (

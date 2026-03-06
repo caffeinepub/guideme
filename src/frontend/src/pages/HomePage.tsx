@@ -1,4 +1,5 @@
 import { Page } from "@/backend.d";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useTrackPageVisit } from "@/hooks/useTracking";
@@ -6,6 +7,7 @@ import { Link } from "@tanstack/react-router";
 import {
   BookOpenText,
   Calculator,
+  ExternalLink,
   FlaskConical,
   Gamepad2,
   Globe,
@@ -62,6 +64,68 @@ const subjectCards = [
     borderHover: "hover:border-[oklch(0.72_0.2_340/0.6)]",
     glowColor: "hover:shadow-[0_0_16px_oklch(0.72_0.2_340/0.25)]",
     to: "/subject-helper" as const,
+  },
+];
+
+const featuredGames = [
+  {
+    emoji: "⚔️",
+    title: "Prodigy Math",
+    description:
+      "Epic RPG where every battle is won by answering maths questions.",
+    category: "Math",
+    url: "https://www.prodigygame.com",
+    categoryColor: "text-[oklch(0.75_0.2_255)]",
+    categoryBg: "bg-[oklch(0.75_0.2_255/0.12)]",
+  },
+  {
+    emoji: "🎯",
+    title: "Kahoot!",
+    description:
+      "Play live quizzes on every school subject — solo or with friends.",
+    category: "Trivia",
+    url: "https://kahoot.com/schools-u/",
+    categoryColor: "text-[oklch(0.78_0.18_60)]",
+    categoryBg: "bg-[oklch(0.78_0.18_60/0.12)]",
+  },
+  {
+    emoji: "🐱",
+    title: "Scratch",
+    description: "Create your own games, animations, and stories with coding.",
+    category: "Creative",
+    url: "https://scratch.mit.edu",
+    categoryColor: "text-[oklch(0.72_0.2_340)]",
+    categoryBg: "bg-[oklch(0.72_0.2_340/0.12)]",
+  },
+  {
+    emoji: "🧠",
+    title: "Logic Games",
+    description:
+      "Tower of Hanoi, chess puzzles, and spatial reasoning challenges.",
+    category: "Puzzle",
+    url: "https://www.coolmathgames.com/0-logic-games",
+    categoryColor: "text-[oklch(0.72_0.2_310)]",
+    categoryBg: "bg-[oklch(0.72_0.2_310/0.12)]",
+  },
+  {
+    emoji: "🟩",
+    title: "Wordle",
+    description:
+      "Guess the 5-letter word in 6 tries. The viral daily word game.",
+    category: "Word",
+    url: "https://www.nytimes.com/games/wordle/index.html",
+    categoryColor: "text-accent",
+    categoryBg: "bg-accent/10",
+  },
+  {
+    emoji: "🌍",
+    title: "Nat Geo Kids Quiz",
+    description:
+      "Test your knowledge of wildlife, geography, and world wonders.",
+    category: "Trivia",
+    url: "https://kids.nationalgeographic.com/games/quizzes",
+    categoryColor: "text-[oklch(0.78_0.18_60)]",
+    categoryBg: "bg-[oklch(0.78_0.18_60/0.12)]",
   },
 ];
 
@@ -196,8 +260,8 @@ export default function HomePage() {
           >
             {[
               { label: "subjects covered", value: "5+" },
-              { label: "games to play", value: "19" },
-              { label: "resources curated", value: "15+" },
+              { label: "games to play", value: "40+" },
+              { label: "resources curated", value: "50+" },
               { label: "always free", value: "100%" },
             ].map((stat) => (
               <div key={stat.label} className="flex items-baseline gap-1.5">
@@ -261,6 +325,82 @@ export default function HomePage() {
                     </CardContent>
                   </Card>
                 </Link>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Featured Games */}
+      <section className="py-16 px-4 bg-secondary/20">
+        <div className="container max-w-6xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="mb-10 flex flex-col sm:flex-row sm:items-end gap-4 justify-between"
+          >
+            <div>
+              <h2 className="font-display font-bold text-2xl sm:text-3xl text-foreground mb-2">
+                🎮 Games to play right now
+              </h2>
+              <p className="text-muted-foreground text-base max-w-xl">
+                40+ games across maths, words, puzzles, trivia, and creative
+                coding.
+              </p>
+            </div>
+            <Link to="/games" className="flex-shrink-0">
+              <Button
+                variant="outline"
+                size="sm"
+                className="rounded-md font-mono font-bold text-xs px-4 gap-2 border-border hover:border-primary/40 hover:bg-secondary/60 transition-all"
+              >
+                <Gamepad2 className="w-3.5 h-3.5" />
+                See all 40+ games →
+              </Button>
+            </Link>
+          </motion.div>
+
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+          >
+            {featuredGames.map((game) => (
+              <motion.div key={game.title} variants={itemVariants}>
+                <a
+                  href={game.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block group h-full"
+                >
+                  <Card className="h-full border border-border bg-card shadow-card hover:border-primary/40 hover:shadow-neon-cyan/20 hover:-translate-y-1 transition-all duration-200 cursor-pointer">
+                    <CardContent className="p-5 flex flex-col gap-3">
+                      <div className="flex items-start gap-3">
+                        <span className="text-2xl leading-none mt-0.5 flex-shrink-0">
+                          {game.emoji}
+                        </span>
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-display font-semibold text-foreground text-sm mb-1 leading-snug">
+                            {game.title}
+                          </h3>
+                          <Badge
+                            className={`text-[10px] px-1.5 py-0 h-5 font-mono font-semibold rounded-sm border-0 ${game.categoryBg} ${game.categoryColor}`}
+                          >
+                            {game.category}
+                          </Badge>
+                        </div>
+                        <ExternalLink className="w-3.5 h-3.5 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0 mt-0.5" />
+                      </div>
+                      <p className="text-muted-foreground text-xs leading-relaxed">
+                        {game.description}
+                      </p>
+                    </CardContent>
+                  </Card>
+                </a>
               </motion.div>
             ))}
           </motion.div>

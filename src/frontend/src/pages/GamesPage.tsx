@@ -93,6 +93,56 @@ const games: Game[] = [
     url: "https://www.mathplayground.com/mathman.html",
     emoji: "👾",
   },
+  {
+    id: "20",
+    title: "Math Playground",
+    description:
+      "Dozens of free maths games and logic puzzles for kids — fractions, multiplication, geometry, and more.",
+    category: "math",
+    ageRange: "Ages 8–14",
+    url: "https://www.mathplayground.com",
+    emoji: "🎲",
+  },
+  {
+    id: "21",
+    title: "Arcademics – Multiplication",
+    description:
+      "Race against other players in real-time multiplication and division challenges. Competitive and addictive.",
+    category: "math",
+    ageRange: "Ages 8–13",
+    url: "https://www.arcademics.com/games/grand-prix",
+    emoji: "🏎️",
+  },
+  {
+    id: "22",
+    title: "Fraction Games",
+    description:
+      "Visual and interactive games to master fractions — comparing, adding, and simplifying made simple and fun.",
+    category: "math",
+    ageRange: "Ages 9–13",
+    url: "https://www.mathplayground.com/Fraction_models.html",
+    emoji: "🍕",
+  },
+  {
+    id: "23",
+    title: "Hooda Math",
+    description:
+      "Free maths games covering algebra, geometry, and logic puzzles. Simple to play, tricky to master.",
+    category: "math",
+    ageRange: "Ages 8–16",
+    url: "https://www.hoodamath.com",
+    emoji: "📐",
+  },
+  {
+    id: "24",
+    title: "IXL Maths Practice",
+    description:
+      "Curriculum-based maths practice with instant feedback. Covers every year group from primary to secondary.",
+    category: "math",
+    ageRange: "Ages 8–16",
+    url: "https://www.ixl.com/math",
+    emoji: "✏️",
+  },
   // Word
   {
     id: "6",
@@ -133,6 +183,46 @@ const games: Game[] = [
     ageRange: "Ages 8–14",
     url: "https://www.abcya.com/games/word_search",
     emoji: "🔍",
+  },
+  {
+    id: "25",
+    title: "Wordle (NYT)",
+    description:
+      "Guess the 5-letter word in 6 tries. The viral word game that the whole world plays every day — great for vocabulary.",
+    category: "word",
+    ageRange: "Ages 10–16",
+    url: "https://www.nytimes.com/games/wordle/index.html",
+    emoji: "🟩",
+  },
+  {
+    id: "26",
+    title: "Crossword Puzzles for Kids",
+    description:
+      "Fun themed crosswords designed for kids. Boosts vocabulary, spelling, and general knowledge at the same time.",
+    category: "word",
+    ageRange: "Ages 8–14",
+    url: "https://www.abcya.com/games/crossword",
+    emoji: "📰",
+  },
+  {
+    id: "27",
+    title: "Boggle Online",
+    description:
+      "Find as many words as possible in a grid of letters before time runs out. Classic, fast, and addictive.",
+    category: "word",
+    ageRange: "Ages 9–16",
+    url: "https://www.wordgames.com/boggle.html",
+    emoji: "🔡",
+  },
+  {
+    id: "28",
+    title: "Typing Club",
+    description:
+      "Learn to type properly with fun exercises and lessons. A vital skill that gets faster the more you practise.",
+    category: "word",
+    ageRange: "Ages 8–16",
+    url: "https://www.typingclub.com",
+    emoji: "⌨️",
   },
   // Puzzle
   {
@@ -175,6 +265,46 @@ const games: Game[] = [
     url: "https://www.coolmathgames.com/0-logic-games",
     emoji: "🧠",
   },
+  {
+    id: "29",
+    title: "Lightbot",
+    description:
+      "Program a robot to light up tiles by giving it instructions. A brilliant intro to coding logic through puzzles.",
+    category: "puzzle",
+    ageRange: "Ages 8–14",
+    url: "https://lightbot.com/flash.html",
+    emoji: "🤖",
+  },
+  {
+    id: "30",
+    title: "2048",
+    description:
+      "Slide numbered tiles on a 4x4 grid to combine them and reach 2048. Simple rules, deep strategy.",
+    category: "puzzle",
+    ageRange: "Ages 10–16",
+    url: "https://play2048.co",
+    emoji: "🔢",
+  },
+  {
+    id: "31",
+    title: "Bloxorz",
+    description:
+      "Roll a rectangular block across a suspended grid without falling off. Spatial thinking at its finest.",
+    category: "puzzle",
+    ageRange: "Ages 10–16",
+    url: "https://www.coolmathgames.com/0-bloxorz",
+    emoji: "📦",
+  },
+  {
+    id: "32",
+    title: "Chess Kids",
+    description:
+      "Learn chess from scratch and play against beginners or the computer. Builds strategy, patience, and foresight.",
+    category: "puzzle",
+    ageRange: "Ages 8–16",
+    url: "https://www.chesskid.com",
+    emoji: "♟️",
+  },
   // Trivia
   {
     id: "14",
@@ -206,6 +336,46 @@ const games: Game[] = [
     url: "https://kids.nationalgeographic.com/games/quizzes",
     emoji: "🌍",
   },
+  {
+    id: "33",
+    title: "Sporcle Kids",
+    description:
+      "Thousands of timed trivia quizzes across every topic imaginable — geography, science, history, movies, and more.",
+    category: "trivia",
+    ageRange: "Ages 10–16",
+    url: "https://www.sporcle.com/games/tags/kids",
+    emoji: "⏱️",
+  },
+  {
+    id: "34",
+    title: "BBC Bitesize Quiz",
+    description:
+      "Curriculum-aligned quiz questions from BBC Bitesize. Test what you know across all school subjects.",
+    category: "trivia",
+    ageRange: "Ages 8–16",
+    url: "https://www.bbc.co.uk/bitesize/quiz",
+    emoji: "📺",
+  },
+  {
+    id: "35",
+    title: "Seterra Geography",
+    description:
+      "Learn world geography through interactive map quizzes — countries, capitals, flags, and landmarks.",
+    category: "trivia",
+    ageRange: "Ages 9–16",
+    url: "https://www.seterra.com",
+    emoji: "🗺️",
+  },
+  {
+    id: "36",
+    title: "Quizlet Live",
+    description:
+      "Study flashcard sets or play Quizlet Live with classmates. Perfect for learning vocabulary and facts fast.",
+    category: "trivia",
+    ageRange: "Ages 10–16",
+    url: "https://quizlet.com/features/learn",
+    emoji: "🃏",
+  },
   // Creative
   {
     id: "17",
@@ -236,6 +406,46 @@ const games: Game[] = [
     ageRange: "Ages 8–16",
     url: "https://www.autodraw.com",
     emoji: "🎨",
+  },
+  {
+    id: "37",
+    title: "Make a Flappy Bird",
+    description:
+      "Use Snap! or MIT App Inventor to build your own Flappy Bird clone from scratch. Real coding, real results.",
+    category: "creative",
+    ageRange: "Ages 10–16",
+    url: "https://snap.berkeley.edu",
+    emoji: "🐦",
+  },
+  {
+    id: "38",
+    title: "Pixel Art Maker",
+    description:
+      "Design pixel art characters, logos, and scenes in your browser. Download your creations when done.",
+    category: "creative",
+    ageRange: "Ages 8–16",
+    url: "https://www.pixilart.com/draw",
+    emoji: "🟦",
+  },
+  {
+    id: "39",
+    title: "Code.org Games",
+    description:
+      "Learn coding fundamentals through fun game-building activities featuring Minecraft, Star Wars, and Frozen themes.",
+    category: "creative",
+    ageRange: "Ages 8–16",
+    url: "https://code.org/student/middle-high",
+    emoji: "🌐",
+  },
+  {
+    id: "40",
+    title: "GarageBand Online (Soundtrap)",
+    description:
+      "Make music online with virtual instruments, loops, and effects. No musical experience needed — just experiment.",
+    category: "creative",
+    ageRange: "Ages 10–16",
+    url: "https://www.soundtrap.com/edu",
+    emoji: "🎵",
   },
 ];
 

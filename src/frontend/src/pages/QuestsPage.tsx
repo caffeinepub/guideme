@@ -172,10 +172,12 @@ function RewardModal({
   open,
   quest,
   onClose,
+  onRewardClaimed,
 }: {
   open: boolean;
   quest: QuestDef | null;
   onClose: () => void;
+  onRewardClaimed: () => void;
 }) {
   const { triggerConfetti } = useConfetti();
   const [chosen, setChosen] = useState(false);
@@ -214,7 +216,6 @@ function RewardModal({
     setChosen(true);
 
     // Grant XP always
-    addXP("math", 0); // no XP from addXP — we'll add it directly
     const state = loadProgress();
     state.totalXP += quest!.xpReward;
     state.level = Math.floor(state.totalXP / 100) + 1;
@@ -239,6 +240,10 @@ function RewardModal({
     }
 
     toast(`⚡ +${quest!.xpReward} XP earned!`, { icon: "⚡" });
+
+    // Update balance strip immediately after granting rewards
+    onRewardClaimed();
+
     setTimeout(onClose, 1200);
   }
 
@@ -568,10 +573,17 @@ export default function QuestsPage() {
     setModalOpen(true);
   }
 
+  function handleRewardClaimed() {
+    // Called immediately after reward is granted — update balance strip right away
+    const fresh = loadProgress();
+    setCoins(fresh.coins);
+    setGems(fresh.gems);
+  }
+
   function handleModalClose() {
     setModalOpen(false);
     setActiveQuest(null);
-    // Re-read fresh values from storage so balance strip updates immediately
+    // Also refresh on close in case anything was missed
     const fresh = loadProgress();
     setCoins(fresh.coins);
     setGems(fresh.gems);
@@ -797,6 +809,7 @@ export default function QuestsPage() {
         open={modalOpen}
         quest={activeQuest}
         onClose={handleModalClose}
+        onRewardClaimed={handleRewardClaimed}
       />
     </div>
   );
