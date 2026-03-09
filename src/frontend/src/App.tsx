@@ -11,6 +11,7 @@ import {
 } from "@tanstack/react-router";
 import { ConfettiProvider } from "./components/Confetti";
 import Layout from "./components/Layout";
+import SplashScreen from "./components/SplashScreen";
 import AboutPage from "./pages/AboutPage";
 import AdminPage from "./pages/AdminPage";
 import AnalyticsPage from "./pages/AnalyticsPage";
@@ -28,6 +29,7 @@ export { Link, useLocation, useNavigate };
 const rootRoute = createRootRoute({
   component: () => (
     <ConfettiProvider>
+      <SplashScreen />
       <Layout>
         <Outlet />
       </Layout>

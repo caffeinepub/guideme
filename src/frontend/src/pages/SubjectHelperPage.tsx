@@ -552,6 +552,99 @@ function SearchError({
   );
 }
 
+// ─── YouTube links ────────────────────────────────────────────────────────────
+
+const YOUTUBE_LINKS: Record<
+  Subject,
+  { title: string; channel: string; url: string }[]
+> = {
+  math: [
+    {
+      title: "Maths explained simply",
+      channel: "Khan Academy",
+      url: "https://www.youtube.com/@khanacademy",
+    },
+    {
+      title: "Beautiful maths",
+      channel: "3Blue1Brown",
+      url: "https://www.youtube.com/@3blue1brown",
+    },
+    {
+      title: "Fun number stuff",
+      channel: "Numberphile",
+      url: "https://www.youtube.com/@numberphile",
+    },
+  ],
+  science: [
+    {
+      title: "Science made fun",
+      channel: "Kurzgesagt",
+      url: "https://www.youtube.com/@kurzgesagt",
+    },
+    {
+      title: "Science experiments",
+      channel: "Mark Rober",
+      url: "https://www.youtube.com/@MarkRober",
+    },
+    {
+      title: "Physics & chemistry",
+      channel: "SciShow",
+      url: "https://www.youtube.com/@scishow",
+    },
+  ],
+  english: [
+    {
+      title: "Grammar & writing tips",
+      channel: "English with Lucy",
+      url: "https://www.youtube.com/@EnglishwithLucy",
+    },
+    {
+      title: "Literature breakdowns",
+      channel: "SparkNotes",
+      url: "https://www.youtube.com/@sparknotes",
+    },
+    {
+      title: "Vocabulary building",
+      channel: "TED-Ed English",
+      url: "https://www.youtube.com/@TED-Ed",
+    },
+  ],
+  generalKnowledge: [
+    {
+      title: "History & facts",
+      channel: "TED-Ed",
+      url: "https://www.youtube.com/@TED-Ed",
+    },
+    {
+      title: "World geography",
+      channel: "Geography Now",
+      url: "https://www.youtube.com/@GeographyNow",
+    },
+    {
+      title: "Amazing world facts",
+      channel: "Wendover Productions",
+      url: "https://www.youtube.com/@Wendover",
+    },
+  ],
+  wellbeing: [
+    {
+      title: "Mental health for teens",
+      channel: "Psych2Go",
+      url: "https://www.youtube.com/@Psych2Go",
+    },
+    {
+      title: "Mindfulness & calm",
+      channel: "Headspace",
+      url: "https://www.youtube.com/@Headspace",
+    },
+    {
+      title: "Study tips & motivation",
+      channel: "Mike and Matty",
+      url: "https://www.youtube.com/@mikeandmatty",
+    },
+  ],
+};
+
 // ─── Wiki result card ─────────────────────────────────────────────────────────
 
 function WikiResultCard({
@@ -656,6 +749,53 @@ function WikiResultCard({
           ))}
         </div>
       )}
+
+      {/* YouTube links */}
+      <div
+        data-ocid="subject_helper.youtube_links.section"
+        className="space-y-2"
+      >
+        <p className="font-mono font-bold text-xs text-muted-foreground uppercase tracking-widest px-1">
+          🎬 Watch &amp; Learn
+        </p>
+        <div className="space-y-2">
+          {YOUTUBE_LINKS[subjectConfig.id].map((video, idx) => (
+            <a
+              key={video.url}
+              data-ocid={`subject_helper.youtube_link.${idx + 1}`}
+              href={video.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 px-4 py-2.5 rounded-md border border-border bg-card/60 hover:border-red-500/40 hover:bg-card transition-all duration-150 group"
+            >
+              {/* YouTube play icon */}
+              <span
+                className="flex-shrink-0 w-6 h-6 rounded-full bg-red-600 flex items-center justify-center"
+                aria-hidden="true"
+              >
+                <svg
+                  viewBox="0 0 10 10"
+                  className="w-3 h-3 fill-white ml-0.5"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <polygon points="2,1 9,5 2,9" />
+                </svg>
+              </span>
+              <div className="flex-1 min-w-0">
+                <p className="text-xs font-mono font-bold text-foreground leading-tight truncate">
+                  {video.title}
+                </p>
+                <p className="text-[10px] font-mono text-muted-foreground mt-0.5 truncate">
+                  {video.channel}
+                </p>
+              </div>
+              <ExternalLink className="w-3 h-3 text-muted-foreground group-hover:text-red-500/70 flex-shrink-0 transition-colors" />
+            </a>
+          ))}
+        </div>
+      </div>
 
       {/* Resources link */}
       <div className="flex flex-wrap gap-3 pt-1">

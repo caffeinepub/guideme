@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { motion } from "motion/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useConfetti } from "../components/Confetti";
 import {
@@ -340,8 +340,35 @@ function ShopItemCard({
 export default function ShopPage() {
   const { triggerConfetti } = useConfetti();
   const [, forceUpdate] = useState(0);
+  const [state, setState] = useState(() => loadProgress());
+
+  // Refresh on mount (handles navigating back from quests in the same tab)
+  useEffect(() => {
+    setState(loadProgress());
+  }, []);
+
+  // Poll every 800ms so balance stays in sync within the same tab
+  useEffect(() => {
+    const id = setInterval(() => {
+      forceUpdate((n) => n + 1);
+      setState(loadProgress());
+    }, 800);
+    return () => clearInterval(id);
+  }, []);
+
+  // Listen for cross-tab storage changes
+  useEffect(() => {
+    function onStorage(e: StorageEvent) {
+      if (e.key === "guideme_progress") {
+        setState(loadProgress());
+      }
+    }
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
+  }, []);
 
   function refresh() {
+    setState(loadProgress());
     forceUpdate((n) => n + 1);
   }
 
@@ -370,8 +397,6 @@ export default function ShopPage() {
     toast.success(`${item.emoji} ${item.name} equipped!`);
     refresh();
   }
-
-  const state = loadProgress();
 
   const containerVariants = {
     hidden: {},
