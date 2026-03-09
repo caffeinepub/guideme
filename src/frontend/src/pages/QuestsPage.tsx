@@ -1,23 +1,14 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import { Progress } from "@/components/ui/progress";
-import { Link, useNavigate } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 import { ExternalLink, Sword, Trophy, Zap } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useConfetti } from "../components/Confetti";
 import {
-  addCoins,
-  addGems,
-  addOwnedItem,
   addXP,
   getTodayDateString,
   getWeekString,
@@ -44,19 +35,10 @@ interface QuestDef {
   title: string;
   description: string;
   isWeekly: boolean;
-  coinReward: number;
-  gemReward: number;
   xpReward: number;
   externalUrl?: string;
-  progressKey?: string; // if set, tracks partial completion
+  progressKey?: string;
   progressTarget?: number;
-}
-
-interface RewardOption {
-  type: "coins" | "gems" | "cosmetic";
-  label: string;
-  icon: string;
-  value: number | string;
 }
 
 // ─── Quest Definitions ────────────────────────────────────────────────────────
@@ -67,8 +49,6 @@ const DAILY_QUESTS: QuestDef[] = [
     title: "Play a Game",
     description: "Head to the Games section and play any game today.",
     isWeekly: false,
-    coinReward: 50,
-    gemReward: 25,
     xpReward: 10,
   },
   {
@@ -76,8 +56,6 @@ const DAILY_QUESTS: QuestDef[] = [
     title: "Ask a Question",
     description: "Use Subject Helper to search for an answer today.",
     isWeekly: false,
-    coinReward: 30,
-    gemReward: 15,
     xpReward: 10,
   },
   {
@@ -85,8 +63,6 @@ const DAILY_QUESTS: QuestDef[] = [
     title: "Visit Brain Lab",
     description: "Pop into the Brain Lab to check out today's challenge.",
     isWeekly: false,
-    coinReward: 20,
-    gemReward: 10,
     xpReward: 10,
   },
   {
@@ -95,8 +71,6 @@ const DAILY_QUESTS: QuestDef[] = [
     description:
       "Jump into Prodigy Math and battle your way through a challenge!",
     isWeekly: false,
-    coinReward: 60,
-    gemReward: 30,
     xpReward: 10,
     externalUrl: "https://www.prodigygame.com",
   },
@@ -105,8 +79,6 @@ const DAILY_QUESTS: QuestDef[] = [
     title: "Win at Number Munchers",
     description: "Play Number Munchers and munch your way to victory!",
     isWeekly: false,
-    coinReward: 70,
-    gemReward: 35,
     xpReward: 10,
     externalUrl: "https://www.mathplayground.com/number_munchers.html",
   },
@@ -118,8 +90,6 @@ const WEEKLY_QUESTS: QuestDef[] = [
     title: "5-Question Streak",
     description: "Answer 5 questions this week in the Subject Helper.",
     isWeekly: true,
-    coinReward: 200,
-    gemReward: 100,
     xpReward: 25,
   },
   {
@@ -127,8 +97,6 @@ const WEEKLY_QUESTS: QuestDef[] = [
     title: "Triple Gamer",
     description: "Play 3 different games this week.",
     isWeekly: true,
-    coinReward: 150,
-    gemReward: 75,
     xpReward: 25,
   },
   {
@@ -136,8 +104,6 @@ const WEEKLY_QUESTS: QuestDef[] = [
     title: "3-Day Streak",
     description: "Keep a 3-day learning streak this week.",
     isWeekly: true,
-    coinReward: 100,
-    gemReward: 50,
     xpReward: 25,
   },
   {
@@ -145,166 +111,9 @@ const WEEKLY_QUESTS: QuestDef[] = [
     title: "Brain Lab Master",
     description: "Complete all Brain Lab activities this week.",
     isWeekly: true,
-    coinReward: 180,
-    gemReward: 90,
     xpReward: 25,
   },
 ];
-
-// Random cosmetics pool for quest rewards
-const COSMETIC_REWARDS = [
-  { id: "bg_ocean", name: "Ocean Deep BG", emoji: "🌊" },
-  { id: "pet_cat", name: "Pixel Cat", emoji: "🐱" },
-  { id: "effect_sparkle", name: "Sparkle Aura", emoji: "✨" },
-  { id: "acc_glasses", name: "Cool Glasses", emoji: "😎" },
-  { id: "bg_forest", name: "Enchanted Forest", emoji: "🌲" },
-  { id: "pet_fox", name: "Clever Fox", emoji: "🦊" },
-  { id: "acc_headphones", name: "Headphones", emoji: "🎧" },
-];
-
-function getRandomCosmetic() {
-  return COSMETIC_REWARDS[Math.floor(Math.random() * COSMETIC_REWARDS.length)];
-}
-
-// ─── Reward Choice Modal ──────────────────────────────────────────────────────
-
-function RewardModal({
-  open,
-  quest,
-  onClose,
-  onRewardClaimed,
-}: {
-  open: boolean;
-  quest: QuestDef | null;
-  onClose: () => void;
-  onRewardClaimed: () => void;
-}) {
-  const { triggerConfetti } = useConfetti();
-  const [chosen, setChosen] = useState(false);
-
-  useEffect(() => {
-    if (open) setChosen(false);
-  }, [open]);
-
-  if (!quest) return null;
-
-  const cosmetic = getRandomCosmetic();
-
-  const options: RewardOption[] = [
-    {
-      type: "coins",
-      label: `${quest.coinReward} Coins`,
-      icon: "🪙",
-      value: quest.coinReward,
-    },
-    {
-      type: "gems",
-      label: `${quest.gemReward} Gems`,
-      icon: "💎",
-      value: quest.gemReward,
-    },
-    {
-      type: "cosmetic",
-      label: `${cosmetic.emoji} ${cosmetic.name}`,
-      icon: "✨",
-      value: cosmetic.id,
-    },
-  ];
-
-  function handleChoose(opt: RewardOption) {
-    if (chosen) return;
-    setChosen(true);
-
-    // Grant XP always
-    const state = loadProgress();
-    state.totalXP += quest!.xpReward;
-    state.level = Math.floor(state.totalXP / 100) + 1;
-    import("../utils/progressStore").then(({ saveProgress }) => {
-      saveProgress(state);
-    });
-
-    if (opt.type === "coins") {
-      addCoins(opt.value as number);
-      triggerConfetti(`🎉 +${opt.value as number} Coins earned!`);
-      toast.success(`🪙 +${opt.value as number} coins added to your wallet!`);
-    } else if (opt.type === "gems") {
-      addGems(opt.value as number);
-      triggerConfetti(`💎 +${opt.value as number} Gems earned!`);
-      toast.success(`💎 +${opt.value as number} gems added!`);
-    } else {
-      addOwnedItem(opt.value as string);
-      triggerConfetti(`✨ Cosmetic unlocked: ${cosmetic.name}!`);
-      toast.success(
-        `✨ ${cosmetic.emoji} ${cosmetic.name} added to your collection!`,
-      );
-    }
-
-    toast(`⚡ +${quest!.xpReward} XP earned!`, { icon: "⚡" });
-
-    // Update balance strip immediately after granting rewards
-    onRewardClaimed();
-
-    setTimeout(onClose, 1200);
-  }
-
-  return (
-    <Dialog open={open} onOpenChange={(v) => !v && !chosen && onClose()}>
-      <DialogContent
-        data-ocid="quests.reward_choice.dialog"
-        className="bg-card border-primary/30 max-w-sm shadow-neon-cyan"
-      >
-        <DialogHeader>
-          <DialogTitle className="font-display font-bold text-foreground text-center text-xl">
-            🎊 Quest Complete!
-          </DialogTitle>
-        </DialogHeader>
-
-        <div className="space-y-4 pt-2">
-          <p className="text-center text-sm font-mono text-muted-foreground">
-            <span className="text-foreground font-bold">{quest.title}</span>{" "}
-            complete! Choose your reward:
-          </p>
-
-          <p className="text-center text-xs font-mono text-primary">
-            ⚡ +{quest.xpReward} XP is automatically granted
-          </p>
-
-          <div className="space-y-2">
-            {options.map((opt, i) => (
-              <motion.button
-                key={opt.type}
-                type="button"
-                data-ocid={`quests.reward_option.button.${i + 1}`}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => handleChoose(opt)}
-                disabled={chosen}
-                className={`w-full flex items-center gap-4 p-4 rounded-lg border transition-all duration-150 text-left
-                  ${opt.type === "coins" ? "border-[oklch(0.78_0.18_60/0.4)] hover:bg-[oklch(0.78_0.18_60/0.08)] hover:border-[oklch(0.78_0.18_60/0.7)]" : ""}
-                  ${opt.type === "gems" ? "border-[oklch(0.72_0.2_310/0.4)] hover:bg-[oklch(0.72_0.2_310/0.08)] hover:border-[oklch(0.72_0.2_310/0.7)]" : ""}
-                  ${opt.type === "cosmetic" ? "border-primary/30 hover:bg-primary/08 hover:border-primary/60" : ""}
-                  bg-secondary/40 disabled:opacity-50 disabled:cursor-not-allowed
-                `}
-              >
-                <span className="text-3xl">{opt.icon}</span>
-                <div>
-                  <p className="font-mono font-bold text-sm text-foreground">
-                    {opt.label}
-                  </p>
-                  <p className="font-mono text-xs text-muted-foreground">
-                    {opt.type === "coins" && "Spend in the Shop"}
-                    {opt.type === "gems" && "Buy premium items"}
-                    {opt.type === "cosmetic" && "Customize your profile"}
-                  </p>
-                </div>
-              </motion.button>
-            ))}
-          </div>
-        </div>
-      </DialogContent>
-    </Dialog>
-  );
-}
 
 // ─── Activity quest config ────────────────────────────────────────────────────
 
@@ -357,19 +166,17 @@ function QuestCard({
   if (quest.id === "weekly_5_questions") {
     const week = getWeekString();
     const today = getTodayDateString();
-    // Count how many days this week had a question answered (rough heuristic via completedQuests)
     const weekQuestions = Object.keys(state.completedQuests).filter(
       (k) =>
         k.startsWith(today.slice(0, 7)) && k.includes("daily_answer_question"),
     ).length;
-    // Actually track via totalXP changes per week — simplified: show streak
     const sub = state.subjectProgress.reduce(
       (sum, s) => sum + s.questionsAnswered,
       0,
     );
     progressValue = Math.min(sub, 5);
     progressMax = 5;
-    void week; // suppress unused
+    void week;
     void weekQuestions;
   } else if (quest.id === "weekly_3_games") {
     const gamesPlayed = Object.keys(state.completedQuests).filter((k) =>
@@ -465,16 +272,10 @@ function QuestCard({
             </div>
           )}
 
-          {/* Rewards row */}
+          {/* XP reward */}
           <div className="flex items-center gap-3 flex-wrap">
             <span className="text-[11px] font-mono text-muted-foreground">
-              Rewards:
-            </span>
-            <span className="inline-flex items-center gap-1 text-[11px] font-mono text-[oklch(0.78_0.18_60)] bg-[oklch(0.78_0.18_60/0.1)] px-2 py-0.5 rounded-sm">
-              🪙 {quest.coinReward}
-            </span>
-            <span className="inline-flex items-center gap-1 text-[11px] font-mono text-[oklch(0.72_0.2_310)] bg-[oklch(0.72_0.2_310/0.1)] px-2 py-0.5 rounded-sm">
-              💎 {quest.gemReward}
+              Reward:
             </span>
             <span className="inline-flex items-center gap-1 text-[11px] font-mono text-primary bg-primary/10 px-2 py-0.5 rounded-sm">
               ⚡ {quest.xpReward} XP
@@ -552,12 +353,8 @@ function QuestCard({
 // ─── Main Page ────────────────────────────────────────────────────────────────
 
 export default function QuestsPage() {
-  const [activeQuest, setActiveQuest] = useState<QuestDef | null>(null);
-  const [modalOpen, setModalOpen] = useState(false);
+  const { triggerConfetti } = useConfetti();
   const [, forceUpdate] = useState(0);
-  // Coins/gems in state so they refresh immediately after reward claim
-  const [coins, setCoins] = useState(() => loadProgress().coins);
-  const [gems, setGems] = useState(() => loadProgress().gems);
 
   useEffect(() => {
     recordActivity();
@@ -569,25 +366,19 @@ export default function QuestsPage() {
       toast("This quest is already complete! ✓", { icon: "✓" });
       return;
     }
-    setActiveQuest(quest);
-    setModalOpen(true);
-  }
 
-  function handleRewardClaimed() {
-    // Called immediately after reward is granted — update balance strip right away
-    const fresh = loadProgress();
-    setCoins(fresh.coins);
-    setGems(fresh.gems);
-  }
+    // Grant XP directly — no modal
+    addXP("math", 0); // ensure store is initialized
+    const state = loadProgress();
+    state.totalXP += quest.xpReward;
+    state.level = Math.floor(state.totalXP / 100) + 1;
+    import("../utils/progressStore").then(({ saveProgress }) => {
+      saveProgress(state);
+    });
 
-  function handleModalClose() {
-    setModalOpen(false);
-    setActiveQuest(null);
-    // Also refresh on close in case anything was missed
-    const fresh = loadProgress();
-    setCoins(fresh.coins);
-    setGems(fresh.gems);
-    forceUpdate((n) => n + 1); // also refresh completed quest state
+    toast.success(`⚡ +${quest.xpReward} XP earned! Quest complete! 🎉`);
+    triggerConfetti(`⚡ +${quest.xpReward} XP — Quest complete!`);
+    forceUpdate((n) => n + 1);
   }
 
   const completedDaily = DAILY_QUESTS.filter((q) =>
@@ -639,35 +430,9 @@ export default function QuestsPage() {
               ⚔️ Quests &amp; Challenges
             </h1>
             <p className="text-muted-foreground text-sm leading-relaxed max-w-xl font-mono">
-              Complete quests to earn coins, gems, and cosmetics. Your bestie's
-              got rewards waiting — go get them!
+              Complete quests to earn XP and level up. Your bestie's got rewards
+              waiting — go get them!
             </p>
-
-            {/* Balance strip */}
-            <div className="flex items-center gap-4 mt-5 flex-wrap">
-              <div className="flex items-center gap-2 px-3 py-1.5 rounded-sm bg-[oklch(0.78_0.18_60/0.1)] border border-[oklch(0.78_0.18_60/0.3)]">
-                <span className="text-base">🪙</span>
-                <span className="font-mono font-bold text-sm text-[oklch(0.78_0.18_60)]">
-                  {coins} Coins
-                </span>
-              </div>
-              <div className="flex items-center gap-2 px-3 py-1.5 rounded-sm bg-[oklch(0.72_0.2_310/0.1)] border border-[oklch(0.72_0.2_310/0.3)]">
-                <span className="text-base">💎</span>
-                <span className="font-mono font-bold text-sm text-[oklch(0.72_0.2_310)]">
-                  {gems} Gems
-                </span>
-              </div>
-              <Link to="/shop">
-                <Button
-                  data-ocid="quests.go_to_shop.secondary_button"
-                  size="sm"
-                  variant="outline"
-                  className="font-mono font-bold text-xs border-border hover:border-primary/40 gap-1.5"
-                >
-                  🛒 Shop →
-                </Button>
-              </Link>
-            </div>
           </motion.div>
         </div>
       </section>
@@ -774,43 +539,8 @@ export default function QuestsPage() {
               </motion.div>
             </AnimatePresence>
           </section>
-
-          {/* ─── CTA strip ─── */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4 }}
-            className="bg-card border border-border rounded-lg p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
-          >
-            <div>
-              <p className="font-display font-bold text-base text-foreground mb-1">
-                Spend your rewards 🛒
-              </p>
-              <p className="text-xs font-mono text-muted-foreground">
-                Use coins and gems in the Shop to unlock backgrounds, pets,
-                effects, and accessories.
-              </p>
-            </div>
-            <Link to="/shop">
-              <Button
-                data-ocid="quests.shop_cta.primary_button"
-                className="font-mono font-bold text-xs gap-2 bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-neon-cyan transition-all whitespace-nowrap"
-              >
-                Open Shop →
-              </Button>
-            </Link>
-          </motion.div>
         </div>
       </div>
-
-      {/* Reward Choice Modal */}
-      <RewardModal
-        open={modalOpen}
-        quest={activeQuest}
-        onClose={handleModalClose}
-        onRewardClaimed={handleRewardClaimed}
-      />
     </div>
   );
 }

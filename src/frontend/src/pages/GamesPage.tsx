@@ -143,6 +143,36 @@ const games: Game[] = [
     url: "https://www.ixl.com/math",
     emoji: "✏️",
   },
+  {
+    id: "41",
+    title: "Mathletics",
+    description:
+      "Competitive maths challenges where you can race against students worldwide in real time. Covers all curriculum areas.",
+    category: "math",
+    ageRange: "Ages 8–16",
+    url: "https://www.mathletics.com",
+    emoji: "🧮",
+  },
+  {
+    id: "42",
+    title: "Sumdog",
+    description:
+      "Adaptive maths games that adjust to your level automatically. Beat your personal best across dozens of game modes.",
+    category: "math",
+    ageRange: "Ages 8–14",
+    url: "https://www.sumdog.com",
+    emoji: "🐕",
+  },
+  {
+    id: "43",
+    title: "Khan Academy Maths",
+    description:
+      "Free video lessons and interactive practice covering every maths topic from basic arithmetic to advanced algebra.",
+    category: "math",
+    ageRange: "Ages 8–16",
+    url: "https://www.khanacademy.org/math",
+    emoji: "📐",
+  },
   // Word
   {
     id: "6",
@@ -223,6 +253,36 @@ const games: Game[] = [
     ageRange: "Ages 8–16",
     url: "https://www.typingclub.com",
     emoji: "⌨️",
+  },
+  {
+    id: "44",
+    title: "Quizlet Spelling",
+    description:
+      "Spelling practice with smart flashcards — study your school word lists and get tested until you nail every one.",
+    category: "word",
+    ageRange: "Ages 8–16",
+    url: "https://quizlet.com/features/spell",
+    emoji: "🔤",
+  },
+  {
+    id: "45",
+    title: "Bananagrams Online",
+    description:
+      "Fast-paced word tile game — build a grid of words as quickly as possible. Great for vocabulary and quick thinking.",
+    category: "word",
+    ageRange: "Ages 9–16",
+    url: "https://www.playbananagrams.com",
+    emoji: "🍌",
+  },
+  {
+    id: "46",
+    title: "ABCya Word Games",
+    description:
+      "A huge collection of fun word games including hangman, scrambles, and rhyming puzzles designed for kids.",
+    category: "word",
+    ageRange: "Ages 8–14",
+    url: "https://www.abcya.com/games/category/word",
+    emoji: "🅰️",
   },
   // Puzzle
   {
@@ -305,6 +365,36 @@ const games: Game[] = [
     url: "https://www.chesskid.com",
     emoji: "♟️",
   },
+  {
+    id: "47",
+    title: "Unblock It",
+    description:
+      "Slide blocks and cars to clear a path for the red block. A deceptively simple sliding puzzle that gets seriously tricky.",
+    category: "puzzle",
+    ageRange: "Ages 8–16",
+    url: "https://www.coolmathgames.com/0-unblock-it",
+    emoji: "🚧",
+  },
+  {
+    id: "48",
+    title: "Nonograms",
+    description:
+      "Solve picture logic puzzles using number clues — fill in the grid correctly and reveal the hidden image.",
+    category: "puzzle",
+    ageRange: "Ages 9–16",
+    url: "https://www.nonograms.org",
+    emoji: "🖼️",
+  },
+  {
+    id: "49",
+    title: "Flow Free",
+    description:
+      "Connect matching coloured dots to fill the entire board — but paths can't cross! Simple concept, deep challenge.",
+    category: "puzzle",
+    ageRange: "Ages 8–16",
+    url: "https://www.coolmathgames.com/0-flow-mania",
+    emoji: "🔵",
+  },
   // Trivia
   {
     id: "14",
@@ -376,6 +466,36 @@ const games: Game[] = [
     url: "https://quizlet.com/features/learn",
     emoji: "🃏",
   },
+  {
+    id: "50",
+    title: "GeoGuessr",
+    description:
+      "You're dropped somewhere in the world — can you figure out where? Use clues in the landscape to guess your location.",
+    category: "trivia",
+    ageRange: "Ages 10–16",
+    url: "https://www.geoguessr.com",
+    emoji: "🌍",
+  },
+  {
+    id: "51",
+    title: "Science Kids Quizzes",
+    description:
+      "Dozens of science trivia quizzes covering animals, space, weather, forces, and famous discoveries for kids.",
+    category: "trivia",
+    ageRange: "Ages 8–14",
+    url: "https://www.sciencekids.co.nz/quizzes.html",
+    emoji: "🔬",
+  },
+  {
+    id: "52",
+    title: "History for Kids Quiz",
+    description:
+      "Test your knowledge of ancient civilisations, wars, famous leaders, and world-changing events through history.",
+    category: "trivia",
+    ageRange: "Ages 8–14",
+    url: "https://www.historyforkids.net/quizzes.html",
+    emoji: "🏛️",
+  },
   // Creative
   {
     id: "17",
@@ -446,6 +566,36 @@ const games: Game[] = [
     ageRange: "Ages 10–16",
     url: "https://www.soundtrap.com/edu",
     emoji: "🎵",
+  },
+  {
+    id: "53",
+    title: "Gimkit",
+    description:
+      "Create quiz-based games that you can share with friends — or join live games made by others in your class.",
+    category: "creative",
+    ageRange: "Ages 10–16",
+    url: "https://www.gimkit.com",
+    emoji: "🎮",
+  },
+  {
+    id: "54",
+    title: "Google Quick Draw",
+    description:
+      "Draw something in 20 seconds and see if Google's AI can guess what it is! A wild and hilarious drawing challenge.",
+    category: "creative",
+    ageRange: "Ages 8–16",
+    url: "https://quickdraw.withgoogle.com",
+    emoji: "✏️",
+  },
+  {
+    id: "55",
+    title: "Canva for Education",
+    description:
+      "Create stunning posters, presentations, infographics, and designs with a powerful free tool built for students.",
+    category: "creative",
+    ageRange: "Ages 10–16",
+    url: "https://www.canva.com/education",
+    emoji: "🎨",
   },
 ];
 

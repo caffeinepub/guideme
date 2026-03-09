@@ -10,7 +10,7 @@ import { Link, useLocation } from "@tanstack/react-router";
 import { Mail, Menu, X, Zap } from "lucide-react";
 import { type ReactNode, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
-import { getTodayDateString, loadProgress } from "../utils/progressStore";
+import { getTodayDateString } from "../utils/progressStore";
 import EventBanner from "./EventBanner";
 
 // ─── Email Sign-Up Modal ──────────────────────────────────────────────────────
@@ -139,7 +139,7 @@ function EmailSignUpModal() {
         <p className="text-center text-sm font-mono text-muted-foreground leading-relaxed px-2 pb-2">
           Drop your email and we'll let you know when something{" "}
           <span className="text-primary font-bold">awesome</span> is happening —
-          like live events with free gems! 💎
+          like live events with free XP! ⚡
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-3 pt-1">
@@ -193,7 +193,6 @@ const navLinks = [
   { label: "📖 Learn", to: "/subject-helper" as const },
   { label: "🚀 My Progress", to: "/progress" as const },
   { label: "⚔️ Quests", to: "/quests" as const },
-  { label: "🛒 Shop", to: "/shop" as const },
   { label: "Games", to: "/games" as const },
   { label: "Resources", to: "/resources" as const },
   { label: "About", to: "/about" as const },
@@ -202,34 +201,6 @@ const navLinks = [
 
 interface LayoutProps {
   children: ReactNode;
-}
-
-function CurrencyDisplay() {
-  const [state, setState] = useState(loadProgress);
-
-  // Refresh on focus / every 3s to stay in sync
-  useEffect(() => {
-    function refresh() {
-      setState(loadProgress());
-    }
-    window.addEventListener("focus", refresh);
-    const interval = setInterval(refresh, 3000);
-    return () => {
-      window.removeEventListener("focus", refresh);
-      clearInterval(interval);
-    };
-  }, []);
-
-  return (
-    <div className="hidden md:flex items-center gap-2 px-2">
-      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-sm bg-[oklch(0.78_0.18_60/0.1)] border border-[oklch(0.78_0.18_60/0.25)] text-[11px] font-mono font-bold text-[oklch(0.78_0.18_60)]">
-        🪙 {state.coins}
-      </span>
-      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-sm bg-[oklch(0.72_0.2_310/0.1)] border border-[oklch(0.72_0.2_310/0.25)] text-[11px] font-mono font-bold text-[oklch(0.72_0.2_310)]">
-        💎 {state.gems}
-      </span>
-    </div>
-  );
 }
 
 export default function Layout({ children }: LayoutProps) {
@@ -289,9 +260,6 @@ export default function Layout({ children }: LayoutProps) {
               </Link>
             ))}
 
-            {/* Currency display */}
-            <CurrencyDisplay />
-
             <Link to="/games" className="ml-1">
               <Button
                 size="sm"
@@ -310,14 +278,8 @@ export default function Layout({ children }: LayoutProps) {
             </a>
           </nav>
 
-          {/* Mobile: currency + hamburger */}
+          {/* Mobile: hamburger */}
           <div className="flex items-center gap-2 md:hidden">
-            <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-sm text-[10px] font-mono font-bold text-[oklch(0.78_0.18_60)]">
-              🪙
-            </span>
-            <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-sm text-[10px] font-mono font-bold text-[oklch(0.72_0.2_310)]">
-              💎
-            </span>
             <button
               type="button"
               className="p-2 rounded-md hover:bg-secondary transition-colors"

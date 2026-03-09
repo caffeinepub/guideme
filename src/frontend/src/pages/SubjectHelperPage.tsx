@@ -10,6 +10,7 @@ import {
   Calculator,
   ExternalLink,
   FlaskConical,
+  Gamepad2,
   Globe,
   Heart,
   Lightbulb,
@@ -21,6 +22,7 @@ import {
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { type GigaEntry, findLocalAnswer } from "../utils/gigaDataset";
 import {
   BADGES,
   addXP,
@@ -645,6 +647,277 @@ const YOUTUBE_LINKS: Record<
   ],
 };
 
+// ─── YouTube video row (shared) ───────────────────────────────────────────────
+
+function YoutubeRow({
+  title,
+  channel,
+  url,
+  ocid,
+}: {
+  title: string;
+  channel: string;
+  url: string;
+  ocid: string;
+}) {
+  return (
+    <a
+      data-ocid={ocid}
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="flex items-center gap-3 px-4 py-2.5 rounded-md border border-border bg-card/60 hover:border-red-500/40 hover:bg-card transition-all duration-150 group"
+    >
+      <span
+        className="flex-shrink-0 w-6 h-6 rounded-full bg-red-600 flex items-center justify-center"
+        aria-hidden="true"
+      >
+        <svg
+          viewBox="0 0 10 10"
+          className="w-3 h-3 fill-white ml-0.5"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <polygon points="2,1 9,5 2,9" />
+        </svg>
+      </span>
+      <div className="flex-1 min-w-0">
+        <p className="text-xs font-mono font-bold text-foreground leading-tight truncate">
+          {title}
+        </p>
+        <p className="text-[10px] font-mono text-muted-foreground mt-0.5 truncate">
+          {channel}
+        </p>
+      </div>
+      <ExternalLink className="w-3 h-3 text-muted-foreground group-hover:text-red-500/70 flex-shrink-0 transition-colors" />
+    </a>
+  );
+}
+
+// ─── Local result card ────────────────────────────────────────────────────────
+
+function LocalResultCard({
+  result,
+  userQuestion,
+  subjectConfig,
+}: {
+  result: GigaEntry;
+  userQuestion: string;
+  subjectConfig: (typeof SUBJECTS)[0];
+}) {
+  const Icon = subjectConfig.icon;
+
+  // Find a matching tutor response if available
+  const matchedTutor = result.tutorResponses?.find((tr) =>
+    userQuestion.toLowerCase().includes(tr.question.toLowerCase().slice(0, 20)),
+  );
+
+  // Limit examples to 5, tips to 3
+  const displayExamples = result.examples.slice(0, 5);
+  const displayTips = result.tips.slice(0, 3);
+
+  return (
+    <motion.div
+      data-ocid="subject_helper.local_result.card"
+      initial={{ opacity: 0, y: 24 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.45, ease: "easeOut" }}
+      className="space-y-4"
+    >
+      {/* Topic badge */}
+      <div
+        className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-sm ${subjectConfig.bg} ${subjectConfig.border} border text-xs font-mono font-bold ${subjectConfig.color}`}
+      >
+        <Icon className="w-3.5 h-3.5" />
+        {result.concept}
+      </div>
+
+      {/* User's question echo */}
+      <div className="bg-secondary/30 border border-border rounded-md px-4 py-3">
+        <p className="text-xs font-mono text-muted-foreground mb-1 uppercase tracking-wider">
+          You asked:
+        </p>
+        <p className="text-sm text-foreground/80 italic leading-relaxed">
+          "{userQuestion}"
+        </p>
+      </div>
+
+      {/* Main answer card */}
+      <Card className="border border-border bg-card shadow-card">
+        <CardContent className="p-5 space-y-4">
+          {/* Header */}
+          <div className="flex items-center gap-2">
+            <div className="w-6 h-6 rounded-md bg-primary/10 border border-primary/20 flex items-center justify-center flex-shrink-0">
+              <Sparkles className="w-3.5 h-3.5 text-primary" />
+            </div>
+            <h3 className="font-mono font-bold text-xs text-primary uppercase tracking-widest">
+              {result.concept}
+            </h3>
+          </div>
+
+          {/* Rule (if available) */}
+          {result.rule && (
+            <div className="px-3 py-2.5 rounded-md bg-primary/5 border border-primary/15">
+              <p className="text-xs font-mono font-bold text-primary mb-0.5 uppercase tracking-wider">
+                The Rule
+              </p>
+              <p className="text-sm text-foreground leading-relaxed">
+                {result.rule}
+              </p>
+            </div>
+          )}
+
+          {/* Explanation */}
+          <p className="text-sm text-foreground leading-relaxed">
+            {result.explanation}
+          </p>
+
+          {/* Examples */}
+          {displayExamples.length > 0 && (
+            <div>
+              <p className="text-xs font-mono font-bold text-muted-foreground uppercase tracking-wider mb-2">
+                Examples
+              </p>
+              <ul className="space-y-1.5">
+                {displayExamples.map((ex) => (
+                  <li
+                    key={ex}
+                    className="flex items-start gap-2 text-sm text-muted-foreground"
+                  >
+                    <span
+                      className={`mt-0.5 text-xs font-bold ${subjectConfig.color} flex-shrink-0`}
+                    >
+                      •
+                    </span>
+                    <span className="leading-relaxed font-mono">{ex}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Tips */}
+          {displayTips.length > 0 && (
+            <div>
+              <p className="text-xs font-mono font-bold text-muted-foreground uppercase tracking-wider mb-2">
+                Tips
+              </p>
+              <ul className="space-y-2">
+                {displayTips.map((tip) => (
+                  <li key={tip} className="flex items-start gap-2">
+                    <Lightbulb
+                      className={`w-3.5 h-3.5 mt-0.5 flex-shrink-0 ${subjectConfig.color}`}
+                    />
+                    <span className="text-sm text-foreground/80 leading-relaxed">
+                      {tip}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Game suggestion */}
+          {result.gameSuggestion && (
+            <a
+              data-ocid="subject_helper.game_suggestion.link"
+              href={result.gameSuggestion.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 px-3 py-2.5 rounded-md border border-border bg-secondary/30 hover:border-primary/30 hover:bg-secondary/60 transition-all duration-150 group"
+            >
+              <Gamepad2
+                className={`w-4 h-4 flex-shrink-0 ${subjectConfig.color}`}
+              />
+              <div className="flex-1 min-w-0">
+                <p className="text-xs font-mono font-bold text-foreground truncate">
+                  {result.gameSuggestion.name}
+                </p>
+                <p className="text-[10px] font-mono text-muted-foreground mt-0.5">
+                  Play to practise this topic
+                </p>
+              </div>
+              <span className="flex-shrink-0 px-2 py-0.5 rounded-sm bg-primary/20 border border-primary/30 text-primary text-[10px] font-mono font-bold">
+                +{result.gameSuggestion.xp} XP
+              </span>
+              <ExternalLink className="w-3 h-3 text-muted-foreground group-hover:text-primary/70 flex-shrink-0 transition-colors" />
+            </a>
+          )}
+
+          {/* Video link from dataset */}
+          {result.videoUrl && (
+            <div>
+              <p className="text-xs font-mono font-bold text-muted-foreground uppercase tracking-wider mb-2">
+                Watch & Learn
+              </p>
+              <YoutubeRow
+                title={`Watch: ${result.concept}`}
+                channel="Educational Video"
+                url={result.videoUrl}
+                ocid="subject_helper.dataset_video.link"
+              />
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Matching tutor response */}
+      {matchedTutor && (
+        <Card className="border border-primary/20 bg-primary/5 shadow-card">
+          <CardContent className="p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="w-5 h-5 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center flex-shrink-0">
+                <Sparkles className="w-3 h-3 text-primary" />
+              </div>
+              <p className="text-xs font-mono font-bold text-primary uppercase tracking-wider">
+                Tutor says
+              </p>
+            </div>
+            <p className="text-sm text-foreground/85 leading-relaxed">
+              {matchedTutor.answer}
+            </p>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* YouTube Watch & Learn */}
+      <div
+        data-ocid="subject_helper.youtube_links.section"
+        className="space-y-2"
+      >
+        <p className="font-mono font-bold text-xs text-muted-foreground uppercase tracking-widest px-1">
+          🎬 More videos
+        </p>
+        <div className="space-y-2">
+          {YOUTUBE_LINKS[subjectConfig.id].map((video, idx) => (
+            <YoutubeRow
+              key={video.url}
+              title={video.title}
+              channel={video.channel}
+              url={video.url}
+              ocid={`subject_helper.youtube_link.${idx + 1}`}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* Resources link */}
+      <div className="flex flex-wrap gap-3 pt-1">
+        <Link to={subjectConfig.resourcePath as "/"}>
+          <Button
+            data-ocid="subject_helper.see_resources_button"
+            size="sm"
+            className="rounded-md font-mono font-bold text-xs gap-2 bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-neon-cyan transition-all duration-200"
+          >
+            See Resources →
+          </Button>
+        </Link>
+      </div>
+    </motion.div>
+  );
+}
+
 // ─── Wiki result card ─────────────────────────────────────────────────────────
 
 function WikiResultCard({
@@ -760,39 +1033,13 @@ function WikiResultCard({
         </p>
         <div className="space-y-2">
           {YOUTUBE_LINKS[subjectConfig.id].map((video, idx) => (
-            <a
+            <YoutubeRow
               key={video.url}
-              data-ocid={`subject_helper.youtube_link.${idx + 1}`}
-              href={video.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-3 px-4 py-2.5 rounded-md border border-border bg-card/60 hover:border-red-500/40 hover:bg-card transition-all duration-150 group"
-            >
-              {/* YouTube play icon */}
-              <span
-                className="flex-shrink-0 w-6 h-6 rounded-full bg-red-600 flex items-center justify-center"
-                aria-hidden="true"
-              >
-                <svg
-                  viewBox="0 0 10 10"
-                  className="w-3 h-3 fill-white ml-0.5"
-                  xmlns="http://www.w3.org/2000/svg"
-                  aria-hidden="true"
-                  focusable="false"
-                >
-                  <polygon points="2,1 9,5 2,9" />
-                </svg>
-              </span>
-              <div className="flex-1 min-w-0">
-                <p className="text-xs font-mono font-bold text-foreground leading-tight truncate">
-                  {video.title}
-                </p>
-                <p className="text-[10px] font-mono text-muted-foreground mt-0.5 truncate">
-                  {video.channel}
-                </p>
-              </div>
-              <ExternalLink className="w-3 h-3 text-muted-foreground group-hover:text-red-500/70 flex-shrink-0 transition-colors" />
-            </a>
+              title={video.title}
+              channel={video.channel}
+              url={video.url}
+              ocid={`subject_helper.youtube_link.${idx + 1}`}
+            />
           ))}
         </div>
       </div>
@@ -824,6 +1071,7 @@ export default function SubjectHelperPage() {
   const [isSearching, setIsSearching] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [result, setResult] = useState<WikiResult | null>(null);
+  const [localResult, setLocalResult] = useState<GigaEntry | null>(null);
   const [error, setError] = useState<"no_results" | "network" | null>(null);
 
   // Mark subject helper quest activity as visited today
@@ -846,12 +1094,61 @@ export default function SubjectHelperPage() {
   async function handleProblemSubmit() {
     if (!selectedSubject || !problem.trim()) return;
 
+    setResult(null);
+    setLocalResult(null);
+    setError(null);
+    setStep(4);
+
+    // ── Step 1: check local dataset first ──────────────────────────────────
+    const localMatch = findLocalAnswer(selectedSubject, problem);
+
+    if (localMatch) {
+      // Brief animation delay for polish
+      await new Promise<void>((resolve) => setTimeout(resolve, 300));
+      setLocalResult(localMatch);
+
+      // Award XP for academic subjects
+      if (
+        selectedSubject === "math" ||
+        selectedSubject === "science" ||
+        selectedSubject === "english"
+      ) {
+        const { newLevel, prevLevel, newBadges } = addXP(selectedSubject, 5);
+        recordActivity();
+        if (newLevel > prevLevel) {
+          toast.success(
+            `🎉 Level Up! You're now Level ${newLevel}! Keep it up, you're crushing it!`,
+            { duration: 4000 },
+          );
+        }
+        for (const badge of newBadges) {
+          const found = BADGES.find((b) => b.label === badge);
+          if (found) {
+            toast(`🏅 New Badge: ${found.label}! ${found.desc}`, {
+              icon: "🏅",
+              duration: 4000,
+            });
+          }
+        }
+      } else {
+        recordActivity();
+      }
+
+      // Quest completion
+      const questDone = completeQuest("daily_answer_question", false);
+      if (questDone) {
+        toast("📖 Quest progress! Head to Quests to claim your reward!", {
+          icon: "⚔️",
+          duration: 4000,
+        });
+      }
+      return;
+    }
+
+    // ── Step 2: fall back to Wikipedia ─────────────────────────────────────
     const query = buildSearchQuery(selectedSubject, problem);
     setSearchQuery(query);
     setIsSearching(true);
-    setResult(null);
-    setError(null);
-    setStep(4);
 
     // Ensure minimum 800ms loading display
     const [wikiResult] = await Promise.allSettled([
@@ -892,7 +1189,6 @@ export default function SubjectHelperPage() {
           }
         }
       } else {
-        // Still record activity for non-XP subjects
         recordActivity();
       }
 
@@ -917,6 +1213,7 @@ export default function SubjectHelperPage() {
     setCustomClass("");
     setProblem("");
     setResult(null);
+    setLocalResult(null);
     setError(null);
     setIsSearching(false);
     setSearchQuery("");
@@ -926,10 +1223,14 @@ export default function SubjectHelperPage() {
     setStep(3);
     setProblem("");
     setResult(null);
+    setLocalResult(null);
     setError(null);
     setIsSearching(false);
     setSearchQuery("");
   }
+
+  // Whether any result (local or wiki) is ready
+  const hasResult = localResult !== null || result !== null;
 
   return (
     <div>
@@ -1114,7 +1415,7 @@ export default function SubjectHelperPage() {
                   What are you struggling with?
                 </h2>
                 <p className="text-muted-foreground text-sm mb-6 font-mono">
-                  Describe it in your own words — we'll search live for the real
+                  Describe it in your own words — we'll search for the real
                   answer. Be specific!
                 </p>
 
@@ -1185,9 +1486,16 @@ export default function SubjectHelperPage() {
                       noResults={error === "no_results"}
                       onTryAgain={handleTryAgain}
                     />
+                  ) : localResult ? (
+                    <LocalResultCard
+                      key="local-result"
+                      result={localResult}
+                      userQuestion={problem}
+                      subjectConfig={subjectConfig}
+                    />
                   ) : result ? (
                     <WikiResultCard
-                      key="result"
+                      key="wiki-result"
                       result={result}
                       userQuestion={problem}
                       subjectConfig={subjectConfig}
@@ -1195,8 +1503,8 @@ export default function SubjectHelperPage() {
                   ) : null}
                 </AnimatePresence>
 
-                {/* Try again / start over — only show once result is loaded */}
-                {!isSearching && result && (
+                {/* Try again / start over — only show once a result is loaded */}
+                {!isSearching && hasResult && (
                   <div className="flex flex-wrap gap-3 mt-6 pt-6 border-t border-border">
                     <Button
                       data-ocid="subject_helper.try_again_button"

@@ -28,8 +28,6 @@ export interface AdminEvent {
   title: string;
   description: string;
   xpReward: number;
-  coinsReward: number;
-  gemsReward: number;
   triggeredAt: number;
   isActive: boolean;
 }
@@ -188,8 +186,6 @@ function AdminDashboard() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [xp, setXp] = useState(50);
-  const [coins, setCoins] = useState(100);
-  const [gems, setGems] = useState(50);
   const [registeredEmails, setRegisteredEmails] = useState<string[]>(() =>
     loadRegisteredEmails(),
   );
@@ -216,8 +212,6 @@ function AdminDashboard() {
       title: title.trim(),
       description: description.trim(),
       xpReward: Math.max(0, xp),
-      coinsReward: Math.max(0, coins),
-      gemsReward: Math.max(0, gems),
       triggeredAt: Date.now(),
       isActive: true,
     };
@@ -242,8 +236,6 @@ function AdminDashboard() {
     setTitle("");
     setDescription("");
     setXp(50);
-    setCoins(100);
-    setGems(50);
 
     toast.success(`🎉 Event "${event.title}" is now LIVE!`);
   }
@@ -325,12 +317,6 @@ function AdminDashboard() {
                     <span className="text-[11px] font-mono bg-primary/10 text-primary border border-primary/20 px-2 py-0.5 rounded-sm">
                       ⚡ {activeEvent.xpReward} XP
                     </span>
-                    <span className="text-[11px] font-mono bg-[oklch(0.78_0.18_60/0.1)] text-[oklch(0.78_0.18_60)] border border-[oklch(0.78_0.18_60/0.3)] px-2 py-0.5 rounded-sm">
-                      🪙 {activeEvent.coinsReward} Coins
-                    </span>
-                    <span className="text-[11px] font-mono bg-[oklch(0.72_0.2_310/0.1)] text-[oklch(0.72_0.2_310)] border border-[oklch(0.72_0.2_310/0.3)] px-2 py-0.5 rounded-sm">
-                      💎 {activeEvent.gemsReward} Gems
-                    </span>
                     <span className="text-[11px] font-mono text-muted-foreground bg-secondary/40 border border-border px-2 py-0.5 rounded-sm ml-auto">
                       {formatTimeAgo(activeEvent.triggeredAt)}
                     </span>
@@ -410,34 +396,6 @@ function AdminDashboard() {
                       min={0}
                       value={xp}
                       onChange={(e) => setXp(Number(e.target.value))}
-                      className="font-mono text-sm bg-secondary/20 border-border focus-visible:border-primary/60"
-                    />
-                  </div>
-
-                  <div>
-                    <Label className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest mb-1.5 block">
-                      🪙 Coins Reward
-                    </Label>
-                    <Input
-                      data-ocid="admin.event_coins.input"
-                      type="number"
-                      min={0}
-                      value={coins}
-                      onChange={(e) => setCoins(Number(e.target.value))}
-                      className="font-mono text-sm bg-secondary/20 border-border focus-visible:border-primary/60"
-                    />
-                  </div>
-
-                  <div>
-                    <Label className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest mb-1.5 block">
-                      💎 Gems Reward
-                    </Label>
-                    <Input
-                      data-ocid="admin.event_gems.input"
-                      type="number"
-                      min={0}
-                      value={gems}
-                      onChange={(e) => setGems(Number(e.target.value))}
                       className="font-mono text-sm bg-secondary/20 border-border focus-visible:border-primary/60"
                     />
                   </div>
@@ -563,8 +521,7 @@ function AdminDashboard() {
                           {event.isActive ? "🟢" : "⚫"} {event.title}
                         </p>
                         <p className="text-[10px] opacity-60 mt-0.5">
-                          ⚡{event.xpReward} XP · 🪙{event.coinsReward} · 💎
-                          {event.gemsReward}
+                          ⚡{event.xpReward} XP
                         </p>
                       </div>
                       <span className="ml-3 text-[10px] opacity-50 whitespace-nowrap">

@@ -2,12 +2,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import type { AdminEvent } from "../pages/AdminPage";
-import {
-  addCoins,
-  addGems,
-  claimEvent,
-  loadProgress,
-} from "../utils/progressStore";
+import { claimEvent, loadProgress } from "../utils/progressStore";
 import { useConfetti } from "./Confetti";
 
 const ACTIVE_EVENT_KEY = "guideme_active_event";
@@ -56,10 +51,6 @@ export default function EventBanner() {
       return;
     }
 
-    // Grant rewards
-    if (event.coinsReward > 0) addCoins(event.coinsReward);
-    if (event.gemsReward > 0) addGems(event.gemsReward);
-
     // Grant XP directly
     if (event.xpReward > 0) {
       const state = loadProgress();
@@ -70,13 +61,11 @@ export default function EventBanner() {
       });
     }
 
-    const parts: string[] = [];
-    if (event.xpReward > 0) parts.push(`⚡ +${event.xpReward} XP`);
-    if (event.coinsReward > 0) parts.push(`🪙 +${event.coinsReward} coins`);
-    if (event.gemsReward > 0) parts.push(`💎 +${event.gemsReward} gems`);
+    const rewardText =
+      event.xpReward > 0 ? `⚡ +${event.xpReward} XP` : "🎉 Reward claimed!";
 
-    triggerConfetti(`🎉 ${parts.join(" · ")} claimed!`);
-    toast.success(`🎉 Event rewards claimed! ${parts.join(", ")}`);
+    triggerConfetti(`🎉 ${rewardText} claimed!`);
+    toast.success(`🎉 Event rewards claimed! ${rewardText}`);
 
     setClaimed(true);
     setEvent(null);
@@ -117,8 +106,7 @@ export default function EventBanner() {
                   <span className="text-accent">{event.title}</span> is{" "}
                   <span className="text-primary">LIVE!</span>{" "}
                   <span className="text-muted-foreground hidden sm:inline">
-                    ⚡{event.xpReward} XP · 🪙{event.coinsReward} · 💎
-                    {event.gemsReward}
+                    ⚡{event.xpReward} XP
                   </span>
                 </p>
                 {event.description && (

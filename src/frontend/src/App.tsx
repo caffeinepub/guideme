@@ -21,7 +21,6 @@ import HomePage from "./pages/HomePage";
 import ProgressPage from "./pages/ProgressPage";
 import QuestsPage from "./pages/QuestsPage";
 import ResourcesPage from "./pages/ResourcesPage";
-import ShopPage from "./pages/ShopPage";
 import SubjectHelperPage from "./pages/SubjectHelperPage";
 
 export { Link, useLocation, useNavigate };
@@ -92,12 +91,6 @@ const questsRoute = createRoute({
   component: QuestsPage,
 });
 
-const shopRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: "/shop",
-  component: ShopPage,
-});
-
 const adminRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/admin",
@@ -114,7 +107,6 @@ const routeTree = rootRoute.addChildren([
   subjectHelperRoute,
   progressRoute,
   questsRoute,
-  shopRoute,
   adminRoute,
 ]);
 

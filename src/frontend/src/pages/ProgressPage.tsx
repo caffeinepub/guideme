@@ -35,35 +35,11 @@ import {
   SUBJECT_XP_MAX,
   type StudentProfile,
   addXP,
-  computeLevel,
   getWeakSubject,
   loadProgress,
   recordActivity,
   saveProgress,
 } from "../utils/progressStore";
-
-// ─── Shop item lookup (mirrors ShopPage) ──────────────────────────────────────
-
-const ALL_SHOP_ITEMS: Record<string, { name: string; emoji: string }> = {
-  bg_galaxy: { name: "Galaxy Theme", emoji: "🌌" },
-  bg_ocean: { name: "Ocean Deep", emoji: "🌊" },
-  bg_neon_city: { name: "Neon City", emoji: "🌃" },
-  bg_forest: { name: "Enchanted Forest", emoji: "🌲" },
-  bg_space: { name: "Outer Space", emoji: "🚀" },
-  pet_cat: { name: "Pixel Cat", emoji: "🐱" },
-  pet_dragon: { name: "Baby Dragon", emoji: "🐲" },
-  pet_robot: { name: "Mini Robot", emoji: "🤖" },
-  pet_unicorn: { name: "Unicorn", emoji: "🦄" },
-  pet_fox: { name: "Clever Fox", emoji: "🦊" },
-  effect_sparkle: { name: "Sparkle Aura", emoji: "✨" },
-  effect_fire: { name: "Fire Trail", emoji: "🔥" },
-  effect_lightning: { name: "Lightning Bolt", emoji: "⚡" },
-  effect_rainbow: { name: "Rainbow Flow", emoji: "🌈" },
-  acc_crown: { name: "Golden Crown", emoji: "👑" },
-  acc_glasses: { name: "Cool Glasses", emoji: "😎" },
-  acc_headphones: { name: "Headphones", emoji: "🎧" },
-  acc_cape: { name: "Hero Cape", emoji: "🦸" },
-};
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -416,9 +392,6 @@ export default function ProgressPage() {
     currentStreak,
     earnedBadges,
     subjectProgress,
-    coins,
-    gems,
-    equippedItems,
   } = progressState;
 
   const weakSubject = getWeakSubject();
@@ -820,98 +793,6 @@ export default function ProgressPage() {
                     </Link>
                   )}
                 </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-
-          {/* ── Currency & Cosmetics ── */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.38 }}
-          >
-            <h2 className="font-display font-bold text-xl text-foreground mb-4">
-              Wallet &amp; Style 💎
-            </h2>
-            <Card
-              data-ocid="progress.wallet.card"
-              className="border border-border bg-card shadow-card"
-            >
-              <CardContent className="p-5 space-y-5">
-                {/* Currency balances */}
-                <div className="flex flex-wrap gap-3">
-                  <div className="flex items-center gap-3 px-4 py-3 rounded-lg bg-[oklch(0.78_0.18_60/0.1)] border border-[oklch(0.78_0.18_60/0.3)]">
-                    <span className="text-3xl">🪙</span>
-                    <div>
-                      <p className="font-mono font-extrabold text-xl text-[oklch(0.78_0.18_60)] leading-none">
-                        {coins}
-                      </p>
-                      <p className="font-mono text-[10px] text-[oklch(0.78_0.18_60/0.7)] uppercase tracking-wider">
-                        Coins
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3 px-4 py-3 rounded-lg bg-[oklch(0.72_0.2_310/0.1)] border border-[oklch(0.72_0.2_310/0.3)]">
-                    <span className="text-3xl">💎</span>
-                    <div>
-                      <p className="font-mono font-extrabold text-xl text-[oklch(0.72_0.2_310)] leading-none">
-                        {gems}
-                      </p>
-                      <p className="font-mono text-[10px] text-[oklch(0.72_0.2_310/0.7)] uppercase tracking-wider">
-                        Gems
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Equipped cosmetics */}
-                <div>
-                  <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest mb-3">
-                    ✨ Equipped Cosmetics
-                  </p>
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                    {[
-                      { slot: "background" as const, label: "Background" },
-                      { slot: "pet" as const, label: "Pet" },
-                      { slot: "effect" as const, label: "Effect" },
-                      { slot: "accessory" as const, label: "Accessory" },
-                    ].map(({ slot, label }) => {
-                      const itemId = equippedItems[slot];
-                      const item = itemId ? ALL_SHOP_ITEMS[itemId] : null;
-                      return (
-                        <div
-                          key={slot}
-                          className={`flex flex-col items-center gap-1.5 p-3 rounded-lg border text-center ${
-                            item
-                              ? "border-primary/30 bg-primary/5"
-                              : "border-border bg-secondary/20"
-                          }`}
-                        >
-                          <span className="text-2xl">
-                            {item ? item.emoji : "—"}
-                          </span>
-                          <p className="text-[9px] font-mono text-muted-foreground uppercase tracking-wider">
-                            {label}
-                          </p>
-                          <p className="text-[10px] font-mono font-bold text-foreground leading-tight">
-                            {item ? item.name : "None"}
-                          </p>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                <Link to="/shop">
-                  <Button
-                    data-ocid="progress.go_to_shop.secondary_button"
-                    size="sm"
-                    variant="outline"
-                    className="font-mono font-bold text-xs border-border hover:border-primary/40 gap-1.5 transition-all"
-                  >
-                    🛒 Open Shop →
-                  </Button>
-                </Link>
               </CardContent>
             </Card>
           </motion.div>
