@@ -50,7 +50,7 @@ const games: Game[] = [
       "Munch your way through numbers, multiples, and factors in this classic arcade-style maths game.",
     category: "math",
     ageRange: "Ages 8–12",
-    url: "https://www.mathplayground.com/number_munchers.html",
+    url: "https://classicreload.com/number-munchers.html",
     emoji: "🔢",
   },
   {
@@ -60,7 +60,7 @@ const games: Game[] = [
       "Shoot number balls to make pairs that add up to 10. Fast-paced addition practice that's genuinely fun.",
     category: "math",
     ageRange: "Ages 8–11",
-    url: "https://www.mathplayground.com/math_lines.html",
+    url: "https://www.coolmathgames.com/0-math-lines",
     emoji: "➕",
   },
   {
@@ -90,7 +90,7 @@ const games: Game[] = [
       "A Pac-Man style maths game where you chomp ghosts by solving equations. Great for mental arithmetic.",
     category: "math",
     ageRange: "Ages 8–12",
-    url: "https://www.mathplayground.com/mathman.html",
+    url: "https://www.coolmathgames.com/0-math-man",
     emoji: "👾",
   },
   {
@@ -120,7 +120,7 @@ const games: Game[] = [
       "Visual and interactive games to master fractions — comparing, adding, and simplifying made simple and fun.",
     category: "math",
     ageRange: "Ages 9–13",
-    url: "https://www.mathplayground.com/Fraction_models.html",
+    url: "https://www.mathplayground.com/fractions.html",
     emoji: "🍕",
   },
   {
@@ -181,7 +181,7 @@ const games: Game[] = [
       "Unscramble jumbled letters to form correct words. Builds spelling skills while keeping you on your toes.",
     category: "word",
     ageRange: "Ages 8–13",
-    url: "https://www.abcya.com/games/word_scramble",
+    url: "https://www.wordgames.com/word-scramble.html",
     emoji: "🔤",
   },
   {
@@ -211,7 +211,7 @@ const games: Game[] = [
       "Find hidden words in a grid of letters. Hundreds of themed puzzles covering science, history, animals, and more.",
     category: "word",
     ageRange: "Ages 8–14",
-    url: "https://www.abcya.com/games/word_search",
+    url: "https://thewordsearch.com",
     emoji: "🔍",
   },
   {
@@ -231,7 +231,7 @@ const games: Game[] = [
       "Fun themed crosswords designed for kids. Boosts vocabulary, spelling, and general knowledge at the same time.",
     category: "word",
     ageRange: "Ages 8–14",
-    url: "https://www.abcya.com/games/crossword",
+    url: "https://www.abcya.com/games/crossword_puzzle",
     emoji: "📰",
   },
   {
@@ -241,7 +241,7 @@ const games: Game[] = [
       "Find as many words as possible in a grid of letters before time runs out. Classic, fast, and addictive.",
     category: "word",
     ageRange: "Ages 9–16",
-    url: "https://www.wordgames.com/boggle.html",
+    url: "https://www.wordplays.com/boggle",
     emoji: "🔡",
   },
   {
@@ -281,7 +281,7 @@ const games: Game[] = [
       "A huge collection of fun word games including hangman, scrambles, and rhyming puzzles designed for kids.",
     category: "word",
     ageRange: "Ages 8–14",
-    url: "https://www.abcya.com/games/category/word",
+    url: "https://www.abcya.com/categories/word-games",
     emoji: "🅰️",
   },
   // Puzzle

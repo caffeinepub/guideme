@@ -161,8 +161,8 @@ export default function AnalyticsPage() {
   const maxPageVisits = Math.max(...pageData.map((p) => p.count), 1);
 
   // Baseline offsets to preserve historical counts across redeploys
-  const BASELINE_VISITS = 524;
-  const BASELINE_GAME_CLICKS = 104;
+  const BASELINE_VISITS = 1263;
+  const BASELINE_GAME_CLICKS = 268;
 
   const totalVisitsNum = Number(totalVisits ?? 0n) + BASELINE_VISITS;
   const totalClicksNum = Number(totalClicks ?? 0n) + BASELINE_GAME_CLICKS;

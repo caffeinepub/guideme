@@ -20,12 +20,10 @@ const REGISTERED_EMAILS_KEY = "guideme_registered_emails";
 const DISMISS_PREFIX = "guideme_signup_dismissed_";
 
 function getSignupDismissedKey(): string {
-  // Key includes today's date so dismissal lasts until checked again
   return `${DISMISS_PREFIX}${getTodayDateString()}`;
 }
 
 function isSignupDismissedRecently(): boolean {
-  // Check last 7 days for a dismiss key
   for (let i = 0; i < 7; i++) {
     const d = new Date();
     d.setDate(d.getDate() - i);
@@ -59,14 +57,11 @@ function EmailSignUpModal() {
   const [emailError, setEmailError] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Don't show on /admin
   const isAdmin = location.pathname.startsWith("/admin");
 
   useEffect(() => {
     if (isAdmin) return;
-    // Already signed up
     if (localStorage.getItem(STUDENT_EMAIL_KEY)) return;
-    // Dismissed recently
     if (isSignupDismissedRecently()) return;
 
     const timer = setTimeout(() => setOpen(true), 1500);
@@ -80,7 +75,6 @@ function EmailSignUpModal() {
       setEmailError("Please enter your email address.");
       return;
     }
-    // Basic email validation
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) {
       setEmailError("Hmm, that doesn't look like a valid email. Try again!");
       return;
@@ -89,9 +83,7 @@ function EmailSignUpModal() {
     setOpen(false);
     toast.success(
       "You're in! 🎉 We'll let you know when something awesome is happening.",
-      {
-        duration: 5000,
-      },
+      { duration: 5000 },
     );
   }
 
@@ -117,7 +109,6 @@ function EmailSignUpModal() {
             "0 0 32px oklch(0.78 0.2 195 / 0.25), 0 4px 24px rgba(0,0,0,0.5)",
         }}
       >
-        {/* Close button */}
         <button
           type="button"
           onClick={handleDismiss}
@@ -212,16 +203,12 @@ export default function Layout({ children }: LayoutProps) {
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Email sign-up modal (first-time visitors) */}
       <EmailSignUpModal />
-
-      {/* Admin Event Banner */}
       <EventBanner />
 
       {/* Navigation */}
       <header className="sticky top-0 z-50 bg-card/90 backdrop-blur-md border-b border-border">
         <div className="container max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
-          {/* Logo */}
           <Link
             to="/"
             className="flex items-center gap-2 group"
@@ -240,7 +227,6 @@ export default function Layout({ children }: LayoutProps) {
             </div>
           </Link>
 
-          {/* Desktop nav */}
           <nav
             className="hidden md:flex items-center gap-0.5"
             aria-label="Main navigation"
@@ -278,7 +264,6 @@ export default function Layout({ children }: LayoutProps) {
             </a>
           </nav>
 
-          {/* Mobile: hamburger */}
           <div className="flex items-center gap-2 md:hidden">
             <button
               type="button"
@@ -296,7 +281,6 @@ export default function Layout({ children }: LayoutProps) {
           </div>
         </div>
 
-        {/* Mobile menu */}
         {mobileOpen && (
           <nav
             className="md:hidden border-t border-border bg-card px-4 py-3 flex flex-col gap-1 animate-fade-in"
@@ -352,9 +336,23 @@ export default function Layout({ children }: LayoutProps) {
                 GuideMe
               </span>
             </div>
-            <p className="text-xs font-mono text-muted-foreground text-center">
-              Built for curious minds. Powered by YOU.
-            </p>
+            <div className="flex flex-col items-center gap-1">
+              <p className="text-xs font-mono text-muted-foreground text-center">
+                Built for curious minds. Powered by YOU.
+              </p>
+              <p className="text-[10px] font-mono text-muted-foreground/60 text-center">
+                Developer:{" "}
+                <span className="text-primary/70">Kimaya Sharma</span>
+                {" · "}Co-devs:{" "}
+                <span className="text-cyan-400 font-semibold">Claude</span>
+                {" · "}
+                <span className="text-green-400 font-semibold">ChatGPT</span>
+                {" · "}
+                <span className="text-yellow-400 font-semibold">
+                  Caffeine AI
+                </span>
+              </p>
+            </div>
             <p className="text-xs text-muted-foreground font-mono">
               © {new Date().getFullYear()}.{" "}
               <a
